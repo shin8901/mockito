@@ -12,9 +12,13 @@ public class Customer {
 	}
 	
 	public Customer(String name,String phoneNumber,String email) {
+		if(!EmailValidator.isValid(email)) {
+			throw new RuntimeException("email is not valid");
+		}
+
+		this.email = email;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
-		this.email = email;
 	}
 
 	public String getEmail() {
