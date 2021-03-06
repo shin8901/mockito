@@ -2,7 +2,6 @@ package com.sds.cleancode.restaurant;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.BDDAssertions.then;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
