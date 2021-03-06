@@ -8,19 +8,20 @@ import org.junit.Test;
 
 public class BookingSchedulerTest {
 
-	public static final DateTime NOT_ON_THE_HOUR = new DateTime(2021, 1, 1, 10, 30);
+	public static final DateTime NOT_ON_THE_HOUR = new DateTime(2021, 2, 1, 10, 30);
+	public static final DateTime ON_THE_HOUR = new DateTime(2021, 2, 1, 10, 0);
 	public static final Customer CUSTOMER = new Customer("user-name", "010-1234-5678");
-	public static final DateTime ON_THE_HOUR = new DateTime(2021, 1, 1, 10, 0);
+	public static final DateTime NOT_SUNDAY = new DateTime(2021, 1, 1, 0, 0);
 	public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 2;
 	public static final int CAPACITY_PER_HOUR = 3;
 
-	public BookingScheduler bookingScheduler;
+	public TestableBookingScheduler bookingScheduler;
 	public TestableSmsSender testableSmsSender = new TestableSmsSender();
 	public TestableMailSender testableMailSender = new TestableMailSender();
 
 	@Before
 	public void setUp() {
-		bookingScheduler = new BookingScheduler(CAPACITY_PER_HOUR);
+		bookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, NOT_SUNDAY);
 		bookingScheduler.setSmsSender(testableSmsSender);
 		bookingScheduler.setMailSender(testableMailSender);
 	}
@@ -116,11 +117,33 @@ public class BookingSchedulerTest {
 		then(testableMailSender.getSendMethodCallCount()).isEqualTo(1);
 	}
 
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void 현재날짜가_일요일인_경우_예약불가_예외처리() {
+		//given
+		DateTime sunday = new DateTime(2021, 1, 3, 0, 0);
+		TestableBookingScheduler testableBookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, sunday);
+		testableBookingScheduler.setSmsSender(testableSmsSender);
+		testableBookingScheduler.setMailSender(testableMailSender);
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, CUSTOMER);
+
+		//when
+		testableBookingScheduler.addSchedule(schedule);
+
+		//then
 	}
 
 	@Test
 	public void 현재날짜가_일요일이_아닌경우_예약가능() {
+		//given
+		TestableBookingScheduler testableBookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, NOT_SUNDAY);
+		testableBookingScheduler.setSmsSender(testableSmsSender);
+		testableBookingScheduler.setMailSender(testableMailSender);
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, CUSTOMER);
+
+		//when
+		testableBookingScheduler.addSchedule(schedule);
+
+		//then
+		then(testableBookingScheduler.hasSchedule(schedule)).isTrue();
 	}
 }
