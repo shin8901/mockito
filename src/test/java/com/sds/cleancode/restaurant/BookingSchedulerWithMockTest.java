@@ -9,17 +9,17 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.BDDMockito.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookingSchedulerWithMockTest {
-    public static final DateTime ON_THE_HOUR = new DateTime(2021, 2, 1, 10, 0);
-    public static final DateTime NOT_SUNDAY = new DateTime(2021, 1, 1, 0, 0);
+    public static final DateTime ON_THE_HOUR = new DateTime(2021, 3, 15, 11, 0);
+    public static final DateTime NOT_SUNDAY = new DateTime(2021, 3, 15, 0, 0);
     public static final Customer CUSTOMER = new Customer("user-name", "010-1234-5678");
-    public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 2;
-    public static final int CAPACITY_PER_HOUR = 3;
+    public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 3;
+    public static final int CAPACITY_PER_HOUR = 5;
 
     @Spy
     @InjectMocks
@@ -30,8 +30,8 @@ public class BookingSchedulerWithMockTest {
     MailSender mailSender = new MailSender();
 
     @Before
-    public void setUp() throws Exception {
-        given(bookingScheduler.getNow()).willReturn(NOT_SUNDAY);
+    public void setUp() {
+        when(bookingScheduler.getNow()).thenReturn(NOT_SUNDAY);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class BookingSchedulerWithMockTest {
     @Test(expected = RuntimeException.class)
     public void 현재날짜가_일요일인_경우_예약불가_예외처리() {
         //given
-        DateTime sunday = new DateTime(2021,1,3,0,0);
-        given(bookingScheduler.getNow()).willReturn(sunday);
+        DateTime sunday = new DateTime(2021,3,14,0,0);
+        when(bookingScheduler.getNow()).thenReturn(sunday);
         Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, CUSTOMER);
 
         //when
@@ -87,13 +87,13 @@ public class BookingSchedulerWithMockTest {
     @Test
     public void 현재날짜가_일요일이_아닌경우_예약가능() {
         //given
-        given(bookingScheduler.getNow()).willReturn(NOT_SUNDAY);
+        when(bookingScheduler.getNow()).thenReturn(NOT_SUNDAY);
         Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, CUSTOMER);
 
         //when
         bookingScheduler.addSchedule(schedule);
 
         //then
-        then(bookingScheduler.hasSchedule(schedule)).isTrue();
+        assertThat(bookingScheduler.hasSchedule(schedule), is(true));
     }
 }
