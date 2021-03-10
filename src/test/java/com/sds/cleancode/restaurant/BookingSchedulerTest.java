@@ -1,6 +1,7 @@
 package com.sds.cleancode.restaurant;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -8,20 +9,21 @@ import org.junit.Test;
 
 public class BookingSchedulerTest {
 
-	public static final DateTime NOT_ON_THE_HOUR = new DateTime(2021, 2, 1, 10, 30);
-	public static final DateTime ON_THE_HOUR = new DateTime(2021, 2, 1, 10, 0);
+	public static final DateTime NOT_ON_THE_HOUR = new DateTime(2021, 3, 15, 11, 30);
+	public static final DateTime ON_THE_HOUR = new DateTime(2021, 3, 15, 11, 0);
+	public static final DateTime NOT_SUNDAY = new DateTime(2021, 3, 15, 0, 0);
+	public static final int CAPACITY_PER_HOUR = 5;
 	public static final Customer CUSTOMER = new Customer("user-name", "010-1234-5678");
-	public static final DateTime NOT_SUNDAY = new DateTime(2021, 1, 1, 0, 0);
-	public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 2;
-	public static final int CAPACITY_PER_HOUR = 3;
+	public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 3;
 
-	public TestableBookingScheduler bookingScheduler;
-	public TestableSmsSender testableSmsSender = new TestableSmsSender();
-	public TestableMailSender testableMailSender = new TestableMailSender();
+	TestableSmsSender testableSmsSender;
+	TestableMailSender testableMailSender;
+	TestableBookingScheduler bookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, NOT_SUNDAY);
 
 	@Before
 	public void setUp() {
-		bookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, NOT_SUNDAY);
+		testableSmsSender = new TestableSmsSender();
+		testableMailSender = new TestableMailSender();
 		bookingScheduler.setSmsSender(testableSmsSender);
 		bookingScheduler.setMailSender(testableMailSender);
 	}
@@ -29,6 +31,7 @@ public class BookingSchedulerTest {
 	@Test(expected = RuntimeException.class)
 	public void 예약은_정시에만_가능하다_정시가_아닌경우_예약불가() {
 		//given
+
 		Schedule schedule = new Schedule(NOT_ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, CUSTOMER);
 
 		//when
@@ -46,8 +49,7 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(schedule);
 
 		//then
-		//assertThat(bookingScheduler.hasSchedule(schedule), is(true));
-		then(bookingScheduler.hasSchedule(schedule)).isTrue();
+		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
 	}
 
 	@Test
@@ -57,11 +59,11 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(schedule);
 
 		//when
-		try {
+		try{
 			bookingScheduler.addSchedule(schedule);
 		} catch (RuntimeException e) {
 			//then
-			then(e.getMessage()).isEqualTo("Number of people is over restaurant capacity per hour");
+			assertThat(e.getMessage(), is("Number of people is over restaurant capacity per hour"));
 		}
 	}
 
@@ -77,7 +79,7 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(newSchedule);
 
 		//then
-		then(bookingScheduler.hasSchedule(newSchedule)).isTrue();
+		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
 	}
 
 	@Test
@@ -89,7 +91,7 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(schedule);
 
 		//then
-		then(testableSmsSender.isSendMethodCalled()).isTrue();
+		assertThat(testableSmsSender.isSendMethodCalled(), is(true));
 	}
 
 	@Test
@@ -101,26 +103,26 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(schedule);
 
 		//then
-		then(testableMailSender.getSendMethodCallCount()).isEqualTo(0);
+		assertThat(testableMailSender.getSendMethodCallCount(), is(0));
 	}
 
 	@Test
 	public void 이메일이_있는_경우에는_이메일_발송() {
 		//given
-		Customer customerWithEmail = new Customer("user-name", "010-1234-5678", "email@google.com");
-		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, customerWithEmail);
+		Customer customerWithMail = new Customer("user-name", "010-1234-5678", "email@google.com");
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE_FOR_TABLE, customerWithMail);
 
 		//when
 		bookingScheduler.addSchedule(schedule);
 
 		//then
-		then(testableMailSender.getSendMethodCallCount()).isEqualTo(1);
+		assertThat(testableMailSender.getSendMethodCallCount(), is(1));
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void 현재날짜가_일요일인_경우_예약불가_예외처리() {
 		//given
-		DateTime sunday = new DateTime(2021, 1, 3, 0, 0);
+		DateTime sunday = new DateTime(2021, 3, 14, 0, 0);
 		TestableBookingScheduler testableBookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, sunday);
 		testableBookingScheduler.setSmsSender(testableSmsSender);
 		testableBookingScheduler.setMailSender(testableMailSender);
@@ -144,6 +146,6 @@ public class BookingSchedulerTest {
 		testableBookingScheduler.addSchedule(schedule);
 
 		//then
-		then(testableBookingScheduler.hasSchedule(schedule)).isTrue();
+		assertThat(testableBookingScheduler.hasSchedule(schedule), is(true));
 	}
 }

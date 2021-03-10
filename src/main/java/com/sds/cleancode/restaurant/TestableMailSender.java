@@ -1,7 +1,6 @@
 package com.sds.cleancode.restaurant;
 
-public class TestableMailSender extends MailSender{
-
+public class TestableMailSender extends MailSender {
     private int sendMethodCallCount;
 
     @Override
