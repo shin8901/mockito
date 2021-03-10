@@ -1,6 +1,6 @@
 package com.sds.cleancode.restaurant;
 
-public class TestableSmsSender extends SmsSender{
+public class TestableSmsSender extends SmsSender {
     private boolean sendMethodCalled;
 
     @Override
