@@ -11,13 +11,14 @@ public class BookingSchedulerTest {
 
 	public static final DateTime NOT_ON_THE_HOUR = new DateTime(2021, 3, 15, 11, 30);
 	public static final DateTime ON_THE_HOUR = new DateTime(2021, 3, 15, 11, 0);
+	public static final DateTime NOT_SUNDAY = new DateTime(2021, 3, 15, 0, 0);
 	public static final int CAPACITY_PER_HOUR = 5;
 	public static final Customer CUSTOMER = new Customer("user-name", "010-1234-5678");
 	public static final int NUMBER_OF_PEOPLE_FOR_TABLE = 3;
 
 	TestableSmsSender testableSmsSender;
 	TestableMailSender testableMailSender;
-	BookingScheduler bookingScheduler = new BookingScheduler(CAPACITY_PER_HOUR);
+	TestableBookingScheduler bookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, NOT_SUNDAY);
 
 	@Before
 	public void setUp() {
@@ -121,7 +122,7 @@ public class BookingSchedulerTest {
 	@Test(expected = RuntimeException.class)
 	public void 현재날짜가_일요일인_경우_예약불가_예외처리() {
 		//given
-		DateTime sunday = new DateTime(2021, 1, 3, 0, 0);
+		DateTime sunday = new DateTime(2021, 3, 14, 0, 0);
 		TestableBookingScheduler testableBookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR, sunday);
 		testableBookingScheduler.setSmsSender(testableSmsSender);
 		testableBookingScheduler.setMailSender(testableMailSender);
@@ -145,6 +146,6 @@ public class BookingSchedulerTest {
 		testableBookingScheduler.addSchedule(schedule);
 
 		//then
-		then(testableBookingScheduler.hasSchedule(schedule)).isTrue();
+		assertThat(testableBookingScheduler.hasSchedule(schedule), is(true));
 	}
 }
