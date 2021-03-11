@@ -39,7 +39,7 @@ public class BookingScheduler {
 			
 		
 		// 일요일에는 시스템을 오픈하지 않는다.
-/*		DateTime now = getNow();
+/*		DateTime now = new DateTime();
 		if(now.getDayOfWeek() == DateTimeConstants.SUNDAY){
 			throw new RuntimeException("Booking system is not available on sunday");
 		}*/
@@ -52,10 +52,6 @@ public class BookingScheduler {
 		if(schedule.getCustomer().getEmail() != null){
 			mailSender.sendMail(schedule);
 		}
-	}
-
-	public DateTime getNow() {
-		return new DateTime();
 	}
 
 	public boolean hasSchedule(Schedule schedule) {
