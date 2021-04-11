@@ -22,7 +22,7 @@ public class BookingSchedulerTest {
 	}
 
 	@Test
-	public void 시간대별_인원제한이_있다_같은_시간대가_다르면_Capacity_차있어도_스케쥴_추가_성공() {
+	public void 시간대별_인원제한이_있다_시간대가_다르면_Capacity_차있어도_스케쥴_추가_성공() {
 	}
 
 	@Test
