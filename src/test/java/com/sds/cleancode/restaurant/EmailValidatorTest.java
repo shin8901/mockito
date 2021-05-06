@@ -12,11 +12,11 @@ public class EmailValidatorTest {
     }
 
     @Test
-    public void 이메일에_특수문자가있으면_false를리턴한다(){
+    public void 이메일에_혀용되지않는_특수문자가있으면_false를리턴한다(){
     }
 
     @Test
-    public void 이메일의_골뱅이뒤에_도메인주소가없으면_false를리턴한다(){
+    public void 이메일의_골뱅이뒤에_도메인주소가_유효하지않으면_false를리턴한다(){
     }
 
     @Test
