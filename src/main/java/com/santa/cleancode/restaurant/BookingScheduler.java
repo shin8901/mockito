@@ -1,10 +1,7 @@
-package com.sds.cleancode.restaurant;
+package com.santa.cleancode.restaurant;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 public class BookingScheduler {
 	private int capacityPerHour;	

@@ -1,4 +1,4 @@
-package com.sds.cleancode.restaurant;
+package com.santa.cleancode.restaurant;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;

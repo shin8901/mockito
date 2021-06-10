@@ -1,4 +1,4 @@
-package com.sds.cleancode.restaurant;
+package com.santa.cleancode.restaurant;
 
 public class MailSender {
 

@@ -9,7 +9,8 @@
 * 이를 방지하기 위해 SmsSender클래스를 상속받는 TestableSmsSender클래스 작성
 
 ```java
-package com.sds.cleancode.restaurant;
+import com.santa.cleancode.restaurant.Schedule;
+import com.santa.cleancode.restaurant.SmsSender;
 
 public class TestableSmsSender extends SmsSender {
     private boolean sendMethodCalled;
@@ -77,11 +78,12 @@ public class BookingSchedulerTest {
     * MailSender클래스를 상속받는 TestableMailSender클래스 작성
 
 ```java
-package com.sds.cleancode.restaurant;
+import com.santa.cleancode.restaurant.MailSender;
+import com.santa.cleancode.restaurant.Schedule;
 
 public class TestableMailSender extends MailSender {
     private int sendMethodCallCount;
-    
+
     @Override
     public void sendMail(Schedule schedule) {
         sendMethodCallCount++;

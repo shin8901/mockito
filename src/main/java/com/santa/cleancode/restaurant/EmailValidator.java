@@ -1,4 +1,4 @@
-package com.sds.cleancode.restaurant;
+package com.santa.cleancode.restaurant;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
