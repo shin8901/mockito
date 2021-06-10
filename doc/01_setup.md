@@ -1,9 +1,10 @@
 # 프로젝트 환경 설정
-### 초기 프로젝트 git에서 clone하기 
+
+### 초기 프로젝트 git에서 clone하기
+
 * https://code.sdsdev.co.kr/act-edu/restaurant-booking
 
 ![GIT_CLONE](./image/01_git_clone.JPG)
-
 
 ### 테스트 케이스 실행
 

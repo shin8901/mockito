@@ -3,13 +3,13 @@
 ## Restaurant Booking
 
 * Legacy 코드에 대한 테스트 케이스 작성
-    
+
     * Mock Framework를 사용하지 않고 테스트 케이스 작성
-  
+
 * 테스트 코드 리팩토링
-    
+
     * Mock Framework를 사용하여 테스트 케이스 작성
-    
+
     * 생성자 Mock, InjectMock, Mock을 적용하여 테스트 코드 리팩토링
 
 
@@ -23,9 +23,9 @@
 
 * BookingScheduler를 통해 시간대별 예약관리
 
-* 예약은 정시에만 가능하다.  → ex. 09:00(0), 09:03(x)
+* 예약은 정시에만 가능하다. → ex. 09:00(0), 09:03(x)
 
-* 시간대별 수용가능 인원을 정할 수 있다. 
+* 시간대별 수용가능 인원을 정할 수 있다.
 
 * 예약완료 시 SMS발송
 
@@ -33,9 +33,7 @@
 
 * 일요일은 예약이 불가하다.
 
-
 ![RESTAURANT_BOOKING](./image/03_restaurant_booking.jpg)
-
 
 ```
 public class BookingSchedulerTest {
@@ -91,7 +89,6 @@ public class BookingSchedulerTest {
 * Schedule
 
 * SmsSender
-
 
 ```
 public class BookingScheduler {

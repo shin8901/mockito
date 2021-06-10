@@ -16,4 +16,4 @@
 
 ![MOCK_SPY](image/08_mockito_mock_vs_spy.JPG)
 
-[이전](07_write_tests_without_mocks.md) [다음](09_.md)
+[이전](07_write_tests_without_mocks.md) [다음](09_write_tests_with_mocks.md)
