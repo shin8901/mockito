@@ -273,10 +273,10 @@ public class BookingSchedulerTest {
         testableBookingScheduler.setMailSender(testableMailSender);
 
         //when
-        bookingScheduler.addSchedule(schedule);
+        testableBookingScheduler.addSchedule(schedule);
 
         //then
-        assertThat(bookingScheduler.hasSchedule(schedule), is(true));
+        assertThat(testableBookingScheduler.hasSchedule(schedule), is(true));
     }
 }
 ```
