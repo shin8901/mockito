@@ -1,6 +1,6 @@
 # 간단한 테스트 케이스 작성
 
-## Utit 테스트 케이스 작성
+## Unit 테스트 케이스 작성
 
 ```java
 import org.junit.Test;
