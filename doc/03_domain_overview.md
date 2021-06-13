@@ -33,7 +33,7 @@
 
 * 일요일은 예약이 불가하다.
 
-![RESTAURANT_BOOKING](./image/03_restaurant_booking.jpg)
+![RESTAURANT_BOOKING](./image/03_restaurant_booking.JPG)
 
 ```
 public class BookingSchedulerTest {
